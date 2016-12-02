@@ -10,6 +10,7 @@ import com.parse.ParseUser;
 
 public class FirstActivity extends AppCompatActivity {
     ParseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,13 @@ public class FirstActivity extends AppCompatActivity {
         TextView welcome = (TextView) findViewById(R.id.lblWelcome);
         welcome.setText(bemvindo);
     }
+
+    public void verSalas(View v) {
+        Intent intent = new Intent(this, ListaSalas.class);
+        startActivity(intent);
+    }
+
+
 
     public void onClickLogout(View v) {
         currentUser.logOut();
