@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.aluno.projetoreservasala.Adaptadores.SalasAdapter;
@@ -32,28 +31,30 @@ public class ListaSalas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_salas);
         listaSalas = (ListView) findViewById(R.id.lstSalas);
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Sala");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Salas");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
 
                 if (e == null) {
 
-                    for (Iterator<ParseObject> i = parseObjects.iterator(); i.hasNext(); ) {
-                        ParseObject object = i.next();
-                        Sala item = new Sala();
-                        item.get(object.getObjectId());
+                    for (ParseObject object : parseObjects ) {
+                        Log.d("aki","aki");
+                        Sala item = new Sala(object.getObjectId(),object.getString("nome"));
                         salas.add(item);
                     }
-                    adapter = new SalasAdapter(getApplicationContext(), R.layout.activity_lista_salas, salas);
-                    listaSalas.setAdapter(adapter);
+
 
                 } else {
                     Log.d("ERROR:", "" + e.getMessage());
                 }
+
+
             }
 
         });
+        adapter = new SalasAdapter(getApplicationContext(), R.layout.activity_lista_salas, salas);
+        listaSalas.setAdapter(adapter);
 
     }
 

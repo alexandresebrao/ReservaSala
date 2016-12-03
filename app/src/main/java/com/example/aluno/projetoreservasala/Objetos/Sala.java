@@ -26,7 +26,12 @@ public class Sala {
         this.nome = nome;
     }
 
-    public Sala(){}
+    public Sala(String id, String nome){
+        this.nome = nome;
+        this.id = id;
+    }
+
+    public Sala() {}
 
     public void setId(String id) {
         this.id = id;
@@ -39,6 +44,7 @@ public class Sala {
     public Sala get(String id) {
         ParseQuery query = new ParseQuery("Salas");
         final Sala sala = new Sala();
+        query.whereEqualTo("_id", id);
         query.getInBackground(id, new GetCallback<ParseObject>() {
             public void done(ParseObject salaParse, com.parse.ParseException e) {
                 if (e == null) {

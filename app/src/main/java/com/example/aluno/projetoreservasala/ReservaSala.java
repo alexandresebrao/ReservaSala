@@ -10,10 +10,8 @@ import com.parse.Parse;
 public class ReservaSala extends Application{
     public void onCreate() {
         super.onCreate();
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("0IkKl7Bdd5GVnDvFG3CWwG8QAxffgdKGaMo85LzE")
-        .clientKey("8YYcp07DjXvjB1thh2DufIT1RIsyKJ4CHN8hzxqu")
-        .server("https://parseapi.back4app.com/").build()
+        Parse.initialize(new Parse.Configuration.Builder(this).applicationId("APPLICATION_ID")
+        .clientKey(null).server("http://192.168.25.6:1337/parse/").build()
         );
     }
 }
