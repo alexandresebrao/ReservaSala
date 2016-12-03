@@ -24,7 +24,7 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     public void verSalas(View v) {
-        Intent intent = new Intent(this, ListaSalas.class);
+        Intent intent = new Intent(this, ListSalas.class);
         startActivity(intent);
     }
 

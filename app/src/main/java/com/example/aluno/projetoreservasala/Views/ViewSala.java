@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.example.aluno.projetoreservasala.R;
 
-public class VerSala extends AppCompatActivity {
+public class ViewSala extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

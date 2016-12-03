@@ -22,9 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Views.FirstActivity" />
-        <activity android:name=".Views.ListaSalas" />
+        <activity android:name=".Views.ListSalas" />
         <activity android:name=".Views.CriarSala" />
-        <activity android:name=".Views.VerSala"></activity>
+        <activity android:name=".Views.ViewSala"></activity>
     </application>
 
 </manifest>

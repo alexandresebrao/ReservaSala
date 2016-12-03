@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ListaSalas extends AppCompatActivity {
+public class ListSalas extends AppCompatActivity {
     ParseUser currentUser = ParseUser.getCurrentUser();
     ListView listaSalas;
     ArrayList<Sala> salas = new ArrayList<>();
