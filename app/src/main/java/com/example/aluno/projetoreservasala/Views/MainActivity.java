@@ -1,4 +1,4 @@
-package com.example.aluno.projetoreservasala;
+package com.example.aluno.projetoreservasala.Views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.aluno.projetoreservasala.R;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -22,11 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_main);
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("0IkKl7Bdd5GVnDvFG3CWwG8QAxffgdKGaMo85LzE")
-                .clientKey("8YYcp07DjXvjB1thh2DufIT1RIsyKJ4CHN8hzxqu")
-                .server("https://parseapi.back4app.com/").build()
-        );
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             Intent intent = new Intent(this, FirstActivity.class);

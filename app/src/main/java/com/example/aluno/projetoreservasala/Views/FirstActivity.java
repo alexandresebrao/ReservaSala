@@ -1,4 +1,4 @@
-package com.example.aluno.projetoreservasala;
+package com.example.aluno.projetoreservasala.Views;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.aluno.projetoreservasala.R;
 import com.parse.ParseUser;
 
 public class FirstActivity extends AppCompatActivity {
