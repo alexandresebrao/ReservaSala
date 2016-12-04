@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView6"
+        android:id="@+id/lblSalaNomeView"
         android:textSize="36sp"
         android:textColor="@android:color/black" />
 
@@ -25,7 +25,7 @@
         android:text="Situação atual:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView6"
+        android:layout_below="@+id/lblSalaNomeView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/textView8"

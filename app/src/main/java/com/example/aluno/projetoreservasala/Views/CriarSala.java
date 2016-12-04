@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.aluno.projetoreservasala.Objetos.Sala;
 import com.example.aluno.projetoreservasala.R;
@@ -18,12 +19,19 @@ public class CriarSala extends AppCompatActivity {
         setContentView(R.layout.activity_criar_sala);
     }
 
-    public void criarSala(View v) {
+    public void saveSala(View v) {
         EditText salaNome = (EditText) findViewById(R.id.txtSalaNome);
-        Sala sala = new Sala(salaNome.getText().toString());
-        sala.save();
-        Intent returnIntent = new Intent();
-        setResult(RESULT_OK,returnIntent);
-        finish();
+        String salanome = salaNome.getText().toString();
+        if (salanome.equals("")) {
+            Toast toast = Toast.makeText(getApplicationContext(),"Nome não pode ser branco",Toast.LENGTH_LONG);
+            toast.show();
+        }
+        else
+        {
+            Intent returnIntent = new Intent();
+            setResult(RESULT_OK,returnIntent);
+            returnIntent.putExtra("nome",salaNome.getText().toString());
+            finish();
+        }
     }
 }

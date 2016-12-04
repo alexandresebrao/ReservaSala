@@ -20,6 +20,8 @@ import java.util.List;
 
 public class SalasAdapter extends ArrayAdapter<Sala> {
 
+    private SalasAdapterCallback callback;
+
     public SalasAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
@@ -39,7 +41,7 @@ public class SalasAdapter extends ArrayAdapter<Sala> {
             v = vi.inflate(R.layout.itemsala, null);
         }
 
-        Sala p = getItem(position);
+        final Sala p = getItem(position);
 
         if (p != null) {
             TextView lblSalaNome = (TextView) v.findViewById(R.id.lblSalaNome);
@@ -49,8 +51,34 @@ public class SalasAdapter extends ArrayAdapter<Sala> {
             if (lblSalaNome != null) {
                 lblSalaNome.setText(p.getSalaNome());
             }
+
+            if (btnSalaHorario != null){
+                btnSalaHorario.setTag(p.getSalaId());
+            }
+
+            btnSalaHorario.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(callback != null) {
+
+                        callback.viewSala(p.getSalaId());
+                    }
+                }
+
+            });
         }
 
         return v;
+    }
+
+    public void setCallback(SalasAdapterCallback callback){
+
+        this.callback = callback;
+    }
+
+    public interface SalasAdapterCallback {
+        void viewSala(String id);
+
     }
 }

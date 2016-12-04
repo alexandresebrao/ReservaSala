@@ -19,18 +19,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ListSalas extends AppCompatActivity {
+public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAdapterCallback {
     ParseUser currentUser = ParseUser.getCurrentUser();
     ListView listaSalas;
     ArrayList<Sala> salas = new ArrayList<>();
     SalasAdapter adapter;
     ListView listView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_salas);
-        listaSalas = (ListView) findViewById(R.id.lstSalas);
+
+    public void getSalas() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Salas");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -39,7 +36,7 @@ public class ListSalas extends AppCompatActivity {
                 if (e == null) {
 
                     for (ParseObject object : parseObjects ) {
-                        Log.d("aki","aki");
+
                         Sala item = new Sala(object.getObjectId(),object.getString("nome"));
                         salas.add(item);
                     }
@@ -49,32 +46,25 @@ public class ListSalas extends AppCompatActivity {
                     Log.d("ERROR:", "" + e.getMessage());
                 }
 
-
             }
 
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_lista_salas);
+        listaSalas = (ListView) findViewById(R.id.lstSalas);
+        getSalas();
         adapter = new SalasAdapter(getApplicationContext(), R.layout.activity_lista_salas, salas);
+        adapter.setCallback(ListSalas.this);
         listaSalas.setAdapter(adapter);
 
     }
 
 
 
-    public List<Sala> getSalas() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Salas");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, com.parse.ParseException e) {
-                if (e == null) {
-                    for (Iterator<ParseObject> i = objects.iterator(); i.hasNext(); ) {
-                        ParseObject object = i.next();
-                        Sala sala = new Sala(object.getString("nome"));
-                        salas.add(sala);
-                    }
-                }
-            }
-        });
-        return salas;
-    }
 
     public void cadastrarSala(View v) {
         Intent intent = new Intent(this,CriarSala.class);
@@ -86,8 +76,26 @@ public class ListSalas extends AppCompatActivity {
         if (requestCode == 1) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                String nome = data.getExtras().getString("nome");
+                Sala sala = new Sala(nome);
+                sala.save();
+                salas.add(sala);
+                salas = new ArrayList<>();
+                getSalas();
+                adapter.notifyDataSetChanged();
 
 
+            }
+        }
+    }
+
+    public void viewSala(String id) {
+        for (Sala sala : salas) {
+            if (sala.getSalaId().equals(id)) {
+                Intent intent = new Intent(this,ViewSala.class);
+                intent.putExtra("sala_id",sala.getSalaId());
+                intent.putExtra("sala_nome",sala.getSalaNome());
+                startActivityForResult(intent,1);
             }
         }
     }

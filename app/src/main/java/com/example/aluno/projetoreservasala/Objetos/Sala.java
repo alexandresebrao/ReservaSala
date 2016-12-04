@@ -1,8 +1,10 @@
 package com.example.aluno.projetoreservasala.Objetos;
 
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.aluno.projetoreservasala.Views.ViewSala;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -22,7 +24,7 @@ public class Sala {
     String id;
 
 
-    public Sala(String nome) {
+    public Sala(String nome){
         this.nome = nome;
     }
 
@@ -31,7 +33,6 @@ public class Sala {
         this.id = id;
     }
 
-    public Sala() {}
 
     public void setId(String id) {
         this.id = id;
@@ -41,22 +42,6 @@ public class Sala {
         this.nome = nome;
     }
 
-    public Sala get(String id) {
-        ParseQuery query = new ParseQuery("Salas");
-        final Sala sala = new Sala();
-        query.whereEqualTo("_id", id);
-        query.getInBackground(id, new GetCallback<ParseObject>() {
-            public void done(ParseObject salaParse, com.parse.ParseException e) {
-                if (e == null) {
-                    sala.setId(salaParse.getObjectId());
-                    sala.setNome(salaParse.getString("nome"));
-                } else {
-                    // something went wrong
-                }
-            }
-        });
-        return sala;
-    }
 
     public String getSalaNome() {
         return this.nome;
@@ -66,10 +51,38 @@ public class Sala {
         return this.id;
     }
 
-    public void save() {
-        ParseObject sala = new ParseObject("Salas");
-        sala.put("nome", this.nome);
-        sala.saveInBackground();
+    public Boolean save() {
+        if (this.valida()) {
+            final ParseObject sala = new ParseObject("Salas");
+            sala.put("nome", this.nome);
+            sala.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(com.parse.ParseException e) {
+                    if (e == null) {
+
+                        Sala.this.id = sala.getObjectId();
+
+                    } else {
+                        // The save failed.
+                    }
+                }
+            });
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 
+
+    public boolean valida() {
+        if (this.nome.equals("")) {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }
