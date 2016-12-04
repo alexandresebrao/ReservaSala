@@ -13,6 +13,10 @@ import android.widget.TimePicker;
 import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CreateHorarios extends AppCompatActivity {
 
     Button btnSave;
@@ -62,6 +66,7 @@ public class CreateHorarios extends AppCompatActivity {
         btnProximoHoraFim = (Button) findViewById(R.id.btnProximoHoraFim);
         btnProximoFimFim = (Button) findViewById(R.id.btnProximoFimFim);
         btnSave.setVisibility(View.INVISIBLE);
+        btnHorarioFim.setVisibility(View.INVISIBLE);
 
         timePickerInicio = (TimePicker) findViewById(R.id.timePickerStart);
         timePickerFim = (TimePicker) findViewById(R.id.timePickerEnd);
@@ -98,29 +103,27 @@ public class CreateHorarios extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void escolherInicio(View v) {
+    public void escolherInicio(View v) throws ParseException {
+        String year = String.valueOf(datePickerInicio.getYear());
+        String month = String.valueOf(datePickerInicio.getMonth() + 1);
+        String day = String.valueOf(datePickerInicio.getDayOfMonth());
+
+        String hour = String.valueOf(timePickerInicio.getHour());
+        String minute = String.valueOf(timePickerInicio.getMinute());
+
+        Horarios horario = new Horarios("sala","usuario");
         btnProximoFimInicio.setVisibility(View.INVISIBLE);
         timePickerInicio.setVisibility(View.INVISIBLE);
         btnProximoFimInicio.setVisibility(View.INVISIBLE);
-        setHorarioInicio();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        String toParse = String.format("%s-%s-%s %s:%s",year,month,day,hour,minute);
+        Date dataInicio = sdf.parse(toParse);
+        horario.setDataInicio(dataInicio);
+        lblHorarioInicio.setText(horario.getDataInicioString());
         camadaText(View.VISIBLE);
-
     }
 
 
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void setHorarioInicio() {
-        int year =  datePickerInicio.getYear();
-        int month = datePickerInicio.getMonth()+1;
-        int day = datePickerInicio.getDayOfMonth();
-
-        int hour = timePickerInicio.getHour();
-        int minute = timePickerInicio.getMinute();
-
-        String texto = String.format("%s /%s /%s %s:%s", String.valueOf(day) ,String.valueOf(month),String.valueOf(year),String.valueOf(hour),String.valueOf(minute));
-        lblHorarioInicio.setText(texto);
-    }
 
     public void escolherDataFim(View v) {
         camadaText(View.INVISIBLE);
@@ -142,6 +145,13 @@ public class CreateHorarios extends AppCompatActivity {
         timePickerFim.setVisibility(View.INVISIBLE);
         btnProximoFimFim.setVisibility(View.INVISIBLE);
         camadaText(View.VISIBLE);
+    }
+
+
+
+    private String getHorarioTexto(int year, int month, int day, int hour, int minute) {
+        String texto = String.format("%s /%s /%s %s:%s", String.valueOf(day) ,String.valueOf(month),String.valueOf(year),String.valueOf(hour),String.valueOf(minute));
+        return texto;
     }
 
 }

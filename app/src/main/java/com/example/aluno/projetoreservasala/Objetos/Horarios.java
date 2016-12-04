@@ -34,24 +34,11 @@ public class Horarios {
     }
 
 
-    public boolean verificaHorarios() {
-        // (StartA <= EndB) and (EndA >= StartB)
-        return true;
-    }
-
-    public boolean disponivel(String salaid) {
-        boolean disponibilidade = false;
-        ArrayList<Horarios> horarios = new ArrayList<>();
-        horarios = getSala(salaid);
-
-        Date date = new Date();
-
-        for (Horarios h : horarios) {
-            if (date.after(h.dataInicio) && date.before(h.dataFim)) {
-                disponibilidade = true;
-            }
-        }
-        return disponibilidade;
+    public Horarios(String salaid, String usuario) {
+        this.salaid = salaid;
+        this.usuario = usuario;
+        this.dataInicio = null;
+        this.dataFim = null;
     }
 
 
@@ -63,7 +50,6 @@ public class Horarios {
 
             @Override
             public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
-
                 if (e == null) {
 
                     for (ParseObject object : parseObjects ) {
@@ -87,5 +73,21 @@ public class Horarios {
 
         });
         return horarios;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public String getDataInicioString() {
+        return this.dataInicio.toString();
+    }
+
+    public boolean isDataInicio() {
+        if (this.dataInicio.equals(null)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
