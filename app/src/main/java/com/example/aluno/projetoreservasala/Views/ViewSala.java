@@ -31,7 +31,7 @@ public class ViewSala extends AppCompatActivity {
     }
 
     public void cadastrarHorario(View v) {
-        Intent intent = new Intent(this,CreateHorariosDate.class);
+        Intent intent = new Intent(this,CreateHorarios.class);
         intent.putExtra("salaid",sala.getSalaId());
         intent.putExtra("salanome",sala.getSalaNome());
         startActivityForResult(intent,1);

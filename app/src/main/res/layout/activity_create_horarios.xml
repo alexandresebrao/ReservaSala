@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.aluno.projetoreservasala.Views.CreateHorariosDate">
+    tools:context="com.example.aluno.projetoreservasala.Views.CreateHorarios">
 
     <DatePicker
         android:layout_width="wrap_content"
@@ -40,6 +40,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="25dp"
         android:layout_alignParentLeft="true"
+        android:onClick="escolherHoraInicio"
         android:visibility="invisible"/>
 
     <Button
@@ -52,7 +53,35 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="25dp"
         android:layout_alignParentLeft="true"
+        android:visibility="invisible"
+        android:onClick="escolherInicio"
+        />
+
+    <Button
+        android:text="Próximo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnProximoHoraFim"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="25dp"
+        android:layout_alignParentLeft="true"
+        android:onClick="escolherHoraFim"
         android:visibility="invisible"/>
+
+    <Button
+        android:text="Próximo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnProximoFimFim"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="25dp"
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible"
+        android:onClick="escolherFim" />
 
     <TimePicker
         android:layout_width="wrap_content"
@@ -137,7 +166,8 @@
         android:id="@+id/btnHorarioFim"
         android:layout_alignTop="@+id/lblFimReservaSala"
         android:layout_alignRight="@+id/datePickerStart"
-        android:layout_alignEnd="@+id/datePickerStart" />
+        android:layout_alignEnd="@+id/datePickerStart"
+        android:onClick="escolherDataFim"/>
 
     <Button
         android:text="Salvar"
