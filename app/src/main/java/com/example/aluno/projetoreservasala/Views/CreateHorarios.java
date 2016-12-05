@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.R;
+import com.parse.ParseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,10 +24,8 @@ public class CreateHorarios extends AppCompatActivity {
     Button btnSave;
     Button btnHorarioInicio;
     Button btnHorarioFim;
-    Button btnProximoHoraInicio;
-    Button btnProximoFimInicio;
-    Button btnProximoHoraFim;
-    Button btnProximoFimFim;
+    Button btnProximoHora;
+    Button btnProximoFim;
 
     TextView lblHorarioInicio;
     TextView lblHorarioFim;
@@ -33,25 +33,23 @@ public class CreateHorarios extends AppCompatActivity {
     TextView lblFimReservaSala;
     TextView lblReservaSala;
 
-    DatePicker datePickerInicio;
-    DatePicker datePickerFim;
+    DatePicker datePicker;
 
-    TimePicker timePickerInicio;
-    TimePicker timePickerFim;
+    TimePicker timePicker;
 
-    String horarioInicio;
-    String horaFim;
+    int dataSelecionada; // 1 - data Inicio 2 - data Fim
 
     Horarios horario;
 
+    ParseUser currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_horarios);
         btnSave = (Button) findViewById(R.id.btnSave);
 
-        datePickerInicio = (DatePicker) findViewById(R.id.datePickerStart);
-        datePickerFim = (DatePicker) findViewById(R.id.datePickerEnd);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+
 
         lblHorarioInicio = (TextView) findViewById(R.id.lblHorarioInicio);
         lblHorarioFim = (TextView) findViewById(R.id.lblHorarioFim);
@@ -59,22 +57,22 @@ public class CreateHorarios extends AppCompatActivity {
         lblFimReservaSala = (TextView) findViewById(R.id.lblFimReservaSala);
         lblReservaSala = (TextView) findViewById(R.id.lblReservaSala);
 
-        btnProximoHoraInicio = (Button) findViewById(R.id.btnProximoHoraInicio);
-        btnProximoFimInicio = (Button) findViewById(R.id.btnProximoFimInicio);
+        btnProximoHora = (Button) findViewById(R.id.btnProximoHoraInicio);
+        btnProximoFim = (Button) findViewById(R.id.btnProximoFim);
         btnHorarioInicio = (Button) findViewById(R.id.btnHorarioInicio);
         btnHorarioFim = (Button) findViewById(R.id.btnHorarioFim);
-        btnProximoHoraFim = (Button) findViewById(R.id.btnProximoHoraFim);
-        btnProximoFimFim = (Button) findViewById(R.id.btnProximoFimFim);
+
         btnSave.setVisibility(View.INVISIBLE);
         btnHorarioFim.setVisibility(View.INVISIBLE);
 
-        timePickerInicio = (TimePicker) findViewById(R.id.timePickerStart);
-        timePickerFim = (TimePicker) findViewById(R.id.timePickerEnd);
+        timePicker = (TimePicker) findViewById(R.id.timePicker);
+
 
         lblHorarioInicio.setText("");
         lblHorarioFim.setText("");
 
-
+        currentUser = ParseUser.getCurrentUser();
+        horario = new Horarios(currentUser.getObjectId(),"sala");
     }
 
     private void camadaText(int valor) {
@@ -85,73 +83,71 @@ public class CreateHorarios extends AppCompatActivity {
         lblHorarioFim.setVisibility(valor);
         btnHorarioInicio.setVisibility(valor);
         btnHorarioFim.setVisibility(valor);
+
+        if (horario.verificaExistenciaDeHorarioValido()) {
+            btnSave.setVisibility(valor);
+        } else {
+            btnSave.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void escolherDataInicio(View v) {
+        dataSelecionada = 1;
         camadaText(View.INVISIBLE);
-        datePickerInicio.setVisibility(View.VISIBLE);
-        btnProximoHoraInicio.setVisibility(View.VISIBLE);
-
+        datePickerVisible(View.VISIBLE);
     }
-
-    public void escolherHoraInicio(View v) {
-        datePickerInicio.setVisibility(View.INVISIBLE);
-        btnProximoHoraInicio.setVisibility(View.INVISIBLE);
-        btnProximoFimInicio.setVisibility(View.VISIBLE);
-        timePickerInicio.setVisibility(View.VISIBLE);
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void escolherInicio(View v) throws ParseException {
-        String year = String.valueOf(datePickerInicio.getYear());
-        String month = String.valueOf(datePickerInicio.getMonth() + 1);
-        String day = String.valueOf(datePickerInicio.getDayOfMonth());
-
-        String hour = String.valueOf(timePickerInicio.getHour());
-        String minute = String.valueOf(timePickerInicio.getMinute());
-
-        Horarios horario = new Horarios("sala","usuario");
-        btnProximoFimInicio.setVisibility(View.INVISIBLE);
-        timePickerInicio.setVisibility(View.INVISIBLE);
-        btnProximoFimInicio.setVisibility(View.INVISIBLE);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        String toParse = String.format("%s-%s-%s %s:%s",year,month,day,hour,minute);
-        Date dataInicio = sdf.parse(toParse);
-        horario.setDataInicio(dataInicio);
-        lblHorarioInicio.setText(horario.getDataInicioString());
-        camadaText(View.VISIBLE);
-    }
-
-
 
     public void escolherDataFim(View v) {
+        dataSelecionada = 2;
         camadaText(View.INVISIBLE);
-        datePickerFim.setVisibility(View.VISIBLE);
-        btnProximoHoraFim.setVisibility(View.VISIBLE);
-
+        datePickerVisible(View.VISIBLE);
     }
 
-    public void escolherHoraFim(View v) {
-        datePickerFim.setVisibility(View.INVISIBLE);
-        btnProximoHoraFim.setVisibility(View.INVISIBLE);
-        btnProximoFimFim.setVisibility(View.VISIBLE);
-        timePickerFim.setVisibility(View.VISIBLE);
-
+    public void escolherHora(View v) {
+        datePickerVisible(View.INVISIBLE);
+        timePickerVisible(View.VISIBLE);
     }
 
-    public void escolherFim(View v) {
-        btnProximoFimFim.setVisibility(View.INVISIBLE);
-        timePickerFim.setVisibility(View.INVISIBLE);
-        btnProximoFimFim.setVisibility(View.INVISIBLE);
+    private void datePickerVisible(int valor) {
+        datePicker.setVisibility(valor);
+        btnProximoHora.setVisibility(valor);
+    }
+
+    private void timePickerVisible(int valor) {
+        btnProximoFim.setVisibility(valor);
+        timePicker.setVisibility(valor);
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void finalizarEscolha(View v) throws ParseException {
+        timePickerVisible(View.INVISIBLE);
+        String year = String.valueOf(datePicker.getYear());
+        String month = String.valueOf(datePicker.getMonth() + 1);
+        String day = String.valueOf(datePicker.getDayOfMonth());
+
+        String hour = String.valueOf(timePicker.getCurrentHour());
+        String minute = String.valueOf(timePicker.getCurrentMinute());
+
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        String toParse = String.format("%s-%s-%s %s:%s", year, month, day, hour, minute);
+        Date data = sdf.parse(toParse);
+        if (dataSelecionada == 1) {
+            horario.setDataInicio(data);
+            lblHorarioInicio.setText(horario.getDataInicioString());
+        } else {
+            if (horario.setDataFim(data)) {
+                lblHorarioFim.setText(horario.getDataFimString());
+            }
+            else {
+                Toast.makeText(this,"Horario de Fim Inválido, verifique", Toast.LENGTH_LONG).show();
+            }
+
+        }
         camadaText(View.VISIBLE);
-    }
-
-
-
-    private String getHorarioTexto(int year, int month, int day, int hour, int minute) {
-        String texto = String.format("%s /%s /%s %s:%s", String.valueOf(day) ,String.valueOf(month),String.valueOf(year),String.valueOf(hour),String.valueOf(minute));
-        return texto;
     }
 
 }

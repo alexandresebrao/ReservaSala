@@ -90,4 +90,32 @@ public class Horarios {
             return true;
         }
     }
+
+    public boolean setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
+        return isDataFimValid();
+    }
+
+    private boolean isDataFimValid() {
+        if (this.dataFim.before(this.dataInicio)) {
+            this.dataFim = null;
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public String getDataFimString() {
+        return this.dataFim.toString();
+    }
+
+    public boolean verificaExistenciaDeHorarioValido() {
+        if ((this.dataInicio != null) && (this.dataFim != null)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
