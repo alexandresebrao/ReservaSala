@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.1.0'
     compile 'com.parse:parse-android:1.13.1'
     compile 'com.android.support:design:24.1.0'
+    compile 'com.code-troopers.betterpickers:library:3.0.2'
 }
