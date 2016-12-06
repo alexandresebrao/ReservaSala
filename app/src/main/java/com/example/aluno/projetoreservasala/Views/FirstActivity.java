@@ -36,4 +36,10 @@ public class FirstActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void onClickToBeta(View v) {
+        Intent intent = new Intent(this,CreateHorariosBeta.class);
+        startActivity(intent);
+
+    }
 }

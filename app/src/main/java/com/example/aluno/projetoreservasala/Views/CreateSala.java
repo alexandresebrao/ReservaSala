@@ -11,7 +11,7 @@ import com.example.aluno.projetoreservasala.Objetos.Sala;
 import com.example.aluno.projetoreservasala.R;
 import com.parse.ParseUser;
 
-public class CriarSala extends AppCompatActivity {
+public class CreateSala extends AppCompatActivity {
     ParseUser currentUser = ParseUser.getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {

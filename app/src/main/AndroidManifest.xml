@@ -23,9 +23,10 @@
         </activity>
         <activity android:name=".Views.FirstActivity" />
         <activity android:name=".Views.ListSalas" />
-        <activity android:name=".Views.CriarSala" />
+        <activity android:name=".Views.CreateSala" />
         <activity android:name=".Views.ViewSala" />
         <activity android:name=".Views.CreateHorarios" />
+        <activity android:name=".Views.CreateHorariosBeta"></activity>
     </application>
 
 </manifest>

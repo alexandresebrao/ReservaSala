@@ -16,7 +16,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAdapterCallback {
@@ -67,7 +66,7 @@ public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAd
 
 
     public void cadastrarSala(View v) {
-        Intent intent = new Intent(this,CriarSala.class);
+        Intent intent = new Intent(this,CreateSala.class);
         startActivityForResult(intent,1);
     }
 
