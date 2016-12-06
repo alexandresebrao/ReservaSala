@@ -39,7 +39,7 @@
         android:layout_alignTop="@+id/textView9"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="setHorarioInicio (CreateHorariosBeta)" />
+        android:onClick="setHorarioInicio" />
 
     <TextView
         android:text="TextView"
@@ -69,7 +69,7 @@
         android:layout_alignTop="@+id/textView10"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="setHorarioFim (CreateHorariosBeta)" />
+        android:onClick="setHorarioFim" />
 
     <TextView
         android:text="TextView"
