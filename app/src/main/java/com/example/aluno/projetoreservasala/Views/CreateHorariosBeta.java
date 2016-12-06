@@ -21,10 +21,7 @@ public class CreateHorariosBeta extends AppCompatActivity implements CalendarDat
 
     private static final String FRAG_TAG_TIME_PICKER = "2";
     private static final String FRAG_TAG_DATE_PICKER = "1";
-
-    String year;
-    String month;
-    String day;
+    
     String tipoHorario;
 
     @Override
