@@ -104,7 +104,7 @@ public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAd
         for (Sala sala : salas) {
             if (sala.getSalaId().equals(id)) {
                 Intent intent = new Intent(this,ViewSala.class);
-                intent.putExtra("sala_id",sala.getSalaId());
+                intent.putExtra("salaid",sala.getSalaId());
                 intent.putExtra("salanome",sala.getSalaNome());
                 startActivity(intent);
             }
@@ -116,7 +116,7 @@ public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAd
         for (Sala sala : salas) {
             if (sala.getSalaId().equals(id)) {
                 Intent intent = new Intent(this,CreateHorario.class);
-                intent.putExtra("sala_id",sala.getSalaId());
+                intent.putExtra("salaid",sala.getSalaId());
                 intent.putExtra("salanome",sala.getSalaNome());
                 startActivity(intent);
             }

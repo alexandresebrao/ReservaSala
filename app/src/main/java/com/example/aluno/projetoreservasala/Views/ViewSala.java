@@ -26,15 +26,13 @@ public class ViewSala extends AppCompatActivity {
         id = intent.getExtras().getString("salaid");
         nome = intent.getExtras().getString("salanome");
         lblSala.setText("Sala: " + nome);
-        ArrayList<Horarios> horarios = new ArrayList<>();
-        horarios = Horarios.getSala(id);
     }
 
     public void cadastrarHorario(View v) {
         Intent intent = new Intent(this,CreateHorario.class);
-        intent.putExtra("salaid",nome);
-        intent.putExtra("salanome",id);
-        startActivityForResult(intent,1);
+        intent.putExtra("salaid",id);
+        intent.putExtra("salanome",nome);
+        startActivity(intent);
     }
 
 
