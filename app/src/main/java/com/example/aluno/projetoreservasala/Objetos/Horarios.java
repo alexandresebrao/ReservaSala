@@ -148,4 +148,8 @@ public class Horarios implements Serializable{
     public Date getDataFim() {
         return dataFim;
     }
+
+    public Date getDataInicio() {
+        return dataInicio;
+    }
 }
