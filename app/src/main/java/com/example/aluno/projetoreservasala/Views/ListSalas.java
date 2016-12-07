@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.aluno.projetoreservasala.Adaptadores.SalasAdapter;
+import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.Objetos.Sala;
 import com.example.aluno.projetoreservasala.R;
 import com.parse.FindCallback;

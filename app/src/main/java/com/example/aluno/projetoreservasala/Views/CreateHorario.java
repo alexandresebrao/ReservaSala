@@ -15,6 +15,8 @@ import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFra
 
 import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.R;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,19 +38,19 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
     int tipoHorario;
 
     Button btnHorarioFim;
-
+    Button btnSave;
     TextView lblhorarioInicio;
     TextView lblhorarioFim;
 
     String salaid;
     String salanome;
+
+    ParseUser currentUser = ParseUser.getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_horarios);
         Intent intent = getIntent();
-
-        horario = new Horarios("sala","usuario");
 
         lblhorarioInicio = (TextView) findViewById(R.id.lblHorarioInicio);
         lblhorarioFim = (TextView) findViewById(R.id.lblHorarioFim);
@@ -57,13 +59,14 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
         btnHorarioFim = (Button) findViewById(R.id.btnEscolherHoraFimBeta);
         btnHorarioFim.setVisibility(View.INVISIBLE);
 
+        btnSave = (Button) findViewById(R.id.btnCriarHorario);
+
         salaid = intent.getExtras().getString("salaid");
         salanome = intent.getExtras().getString("salanome");
 
         lblSalaHorario.setText(String.format("Reservar sala: %s",salanome));
 
-
-
+        horario = new Horarios(salaid,currentUser.getObjectId());
     }
 
     public void setHorarioInicio(View v) {
@@ -127,10 +130,21 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
         {
             if (horario.setDataFim(d)) {
                 lblhorarioFim.setText(horario.getDataFimString());
+                btnSave.setVisibility(View.VISIBLE);
             }
             else {
                 Toast.makeText(this,"Horário para o Fim inválido",Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    public void saveHorario(View v) {
+        if (horario.save()) {
+            finish();
+        }
+        else
+        {
+            Toast.makeText(this,"Não foi possivel salvar o horario",Toast.LENGTH_SHORT).show();
         }
     }
 

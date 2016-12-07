@@ -5,7 +5,9 @@ import android.util.Log;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class Horarios {
     Date dataFim;
     boolean repeteSemana;
     String usuario;
+
+
 
     public Horarios(String salaid, Date dataInicio, Date dataFim, boolean repeteSemana, String usuario) {
         this.salaid = salaid;
@@ -42,38 +46,8 @@ public class Horarios {
     }
 
 
-    public static ArrayList<Horarios> getSala(String id) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Horarios");
-        final ArrayList<Horarios> horarios = new ArrayList<>();
-        query.whereEqualTo("sala_id",id);
-        query.findInBackground(new FindCallback<ParseObject>() {
-
-            @Override
-            public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
-                if (e == null) {
-
-                    for (ParseObject object : parseObjects ) {
-
-                        String id_sala = object.getString("salaid");
-                        String datainicio = object.getString("dataInicio");
-                        String datafim = object.getString("dataFim");
-                        Boolean repetesemana = object.getBoolean("repeteSemana");
-                        String usuario = object.getString("usuario");
-
-                        Horarios horario = new Horarios(id_sala,new Date(datainicio),new Date(datafim),repetesemana,usuario);
-                        horarios.add(horario);
-                    }
 
 
-                } else {
-                    Log.d("ERROR:", "" + e.getMessage());
-                }
-
-            }
-
-        });
-        return horarios;
-    }
 
     public void setDataInicio(Date dataInicio) {
         this.dataInicio = dataInicio;
@@ -118,4 +92,42 @@ public class Horarios {
             return false;
         }
     }
+
+    public Boolean save() {
+        if (verificaExistenciaDeHorarioValido()) {
+            final ParseObject horarioParse = new ParseObject("Horarios");
+            horarioParse.put("salaid", this.salaid);
+            horarioParse.put("dataInicio", this.dataInicio);
+            horarioParse.put("dataFim", this.dataFim);
+            horarioParse.put("usuarioid",this.usuario);
+            horarioParse.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(com.parse.ParseException e) {
+                    if (e == null) {
+
+                        Horarios.this.id = horarioParse.getObjectId();
+
+                    } else {
+
+                        // The save failed.
+                    }
+                }
+            });
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+
+
+
+
+
+    public String getUsuario() {
+        return this.usuario;
+    }
+
 }
