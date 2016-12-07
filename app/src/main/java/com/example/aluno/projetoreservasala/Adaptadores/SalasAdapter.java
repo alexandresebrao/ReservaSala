@@ -67,6 +67,18 @@ public class SalasAdapter extends ArrayAdapter<Sala> {
                 }
 
             });
+
+            btnSalaReservar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(callback != null) {
+
+                        callback.viewReserva(p.getSalaId());
+                    }
+                }
+
+            });
         }
 
         return v;
@@ -80,5 +92,6 @@ public class SalasAdapter extends ArrayAdapter<Sala> {
     public interface SalasAdapterCallback {
         void viewSala(String id);
 
+        void viewReserva(String salaId);
     }
 }

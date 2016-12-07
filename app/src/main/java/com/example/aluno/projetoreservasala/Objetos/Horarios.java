@@ -80,7 +80,7 @@ public class Horarios {
     }
 
     public String getDataInicioString() {
-        return this.dataInicio.toString();
+        return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(this.dataInicio);
     }
 
     public boolean isDataInicio() {
@@ -107,7 +107,7 @@ public class Horarios {
     }
 
     public String getDataFimString() {
-        return this.dataFim.toString();
+        return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(this.dataFim);
     }
 
     public boolean verificaExistenciaDeHorarioValido() {

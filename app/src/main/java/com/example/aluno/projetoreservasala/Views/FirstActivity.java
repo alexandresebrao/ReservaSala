@@ -38,7 +38,7 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     public void onClickToBeta(View v) {
-        Intent intent = new Intent(this,CreateHorariosBeta.class);
+        Intent intent = new Intent(this,CreateHorario.class);
         startActivity(intent);
 
     }

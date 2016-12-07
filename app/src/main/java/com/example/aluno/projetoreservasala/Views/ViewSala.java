@@ -14,28 +14,30 @@ import com.example.aluno.projetoreservasala.R;
 import java.util.ArrayList;
 
 public class ViewSala extends AppCompatActivity {
-    Sala sala;
+    String nome;
+    String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_sala);
         Intent intent = getIntent();
         TextView lblSala = (TextView) findViewById(R.id.lblSalaNomeView);
-        String id = intent.getExtras().getString("sala_id");
-        String nome = intent.getExtras().getString("sala_nome");
-        sala = new Sala(id,nome);
-        Log.d("Sala nome:", sala.getSalaNome());
-        lblSala.setText("Sala: " + sala.getSalaNome());
+        id = intent.getExtras().getString("salaid");
+        nome = intent.getExtras().getString("salanome");
+        lblSala.setText("Sala: " + nome);
         ArrayList<Horarios> horarios = new ArrayList<>();
         horarios = Horarios.getSala(id);
     }
 
     public void cadastrarHorario(View v) {
-        Intent intent = new Intent(this,CreateHorarios.class);
-        intent.putExtra("salaid",sala.getSalaId());
-        intent.putExtra("salanome",sala.getSalaNome());
+        Intent intent = new Intent(this,CreateHorario.class);
+        intent.putExtra("salaid",nome);
+        intent.putExtra("salanome",id);
         startActivityForResult(intent,1);
     }
+
+
 
 
 }
