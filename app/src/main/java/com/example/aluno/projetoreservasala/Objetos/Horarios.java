@@ -73,7 +73,7 @@ public class Horarios implements Serializable{
         return isDataFimValid();
     }
 
-    private boolean isDataFimValid() {
+    public boolean isDataFimValid() {
         if (this.dataFim.before(this.dataInicio)) {
             this.dataFim = null;
             return false;
@@ -135,13 +135,17 @@ public class Horarios implements Serializable{
 
 
     public boolean valid() {
-        boolean valor = false;
+        boolean valor = true;
         for (Horarios h : this.horarios) {
             // (StartA <= EndB)  and  (EndA >= StartB)
             if ((h.dataInicio.before(this.dataFim)) && (h.dataFim.after(this.dataInicio))) {
-                valor = true;
+                valor = false;
             }
         }
         return valor;
+    }
+
+    public Date getDataFim() {
+        return dataFim;
     }
 }

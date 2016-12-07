@@ -104,12 +104,14 @@ public class ViewSala extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 Horarios horario = (Horarios) data.getExtras().getSerializable("horario");
+                horario.setHorarios(horariosfinal);
                 if  (horario.save()) {
+
                     horariosfinal.add(horario);
                     adapter.notifyDataSetChanged();
-                };
-                Toast.makeText(this,"Horario bate",Toast.LENGTH_LONG).show();
-
+                } else {
+                    Toast.makeText(this,"Horario bate",Toast.LENGTH_LONG).show();
+                }
             }
 
         }

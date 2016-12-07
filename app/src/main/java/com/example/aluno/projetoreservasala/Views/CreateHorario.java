@@ -86,7 +86,10 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
                 .setFirstDayOfWeek(Calendar.SUNDAY)
                 .setCancelText("Cancelar")
                 .setDoneText("Próximo");
-        cdp.setCancelable(false);
+
+        if (tipoHorario==2) {
+            cdp.setPreselectedDate(year,month,day);
+        }
         cdp.show(getSupportFragmentManager(), FRAG_TAG_DATE_PICKER);
     }
 
@@ -122,6 +125,10 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
 
         if (tipoHorario == 1) {
             horario.setDataInicio(d);
+            if (horario.isDataFimValid()) {
+                horario.setDataFim(null);
+                lblhorarioFim.setText("");
+            }
             btnHorarioFim.setVisibility(View.VISIBLE);
             lblhorarioInicio.setText(horario.getDataInicioString());
 
