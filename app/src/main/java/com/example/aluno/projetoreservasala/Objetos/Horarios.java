@@ -1,5 +1,7 @@
 package com.example.aluno.projetoreservasala.Objetos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.parse.FindCallback;
@@ -7,6 +9,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,13 +21,14 @@ import java.util.List;
  * Created by xandizitxu on 03/12/16.
  */
 
-public class Horarios {
+public class Horarios implements Serializable{
     String salaid;
     String id;
     Date dataInicio;
     Date dataFim;
     boolean repeteSemana;
     String usuario;
+    ArrayList<Horarios> horarios;
 
 
 
@@ -47,7 +51,13 @@ public class Horarios {
 
 
 
+    public void setHorarios(ArrayList<Horarios> horarios) {
+        this.horarios = horarios;
+    }
 
+    public ArrayList<Horarios> getHorarios() {
+        return this.horarios;
+    }
 
     public void setDataInicio(Date dataInicio) {
         this.dataInicio = dataInicio;
@@ -57,13 +67,6 @@ public class Horarios {
         return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(this.dataInicio);
     }
 
-    public boolean isDataInicio() {
-        if (this.dataInicio.equals(null)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     public boolean setDataFim(Date dataFim) {
         this.dataFim = dataFim;
@@ -94,7 +97,7 @@ public class Horarios {
     }
 
     public Boolean save() {
-        if (verificaExistenciaDeHorarioValido()) {
+        if (verificaExistenciaDeHorarioValido() && valid()) {
             final ParseObject horarioParse = new ParseObject("Horarios");
             horarioParse.put("salaid", this.salaid);
             horarioParse.put("dataInicio", this.dataInicio);
@@ -130,4 +133,15 @@ public class Horarios {
         return this.usuario;
     }
 
+
+    public boolean valid() {
+        boolean valor = false;
+        for (Horarios h : this.horarios) {
+            // (StartA <= EndB)  and  (EndA >= StartB)
+            if ((h.dataInicio.before(this.dataFim)) && (h.dataFim.after(this.dataInicio))) {
+                valor = true;
+            }
+        }
+        return valor;
+    }
 }

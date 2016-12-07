@@ -1,6 +1,7 @@
 package com.example.aluno.projetoreservasala.Views;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,6 @@ import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFra
 
 import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.R;
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 import java.text.ParseException;
@@ -139,7 +139,10 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
     }
 
     public void saveHorario(View v) {
-        if (horario.save()) {
+        if (horario.verificaExistenciaDeHorarioValido()) {
+            Intent intent = new Intent();
+            setResult(RESULT_OK,intent);
+            intent.putExtra("horario", horario);
             finish();
         }
         else
