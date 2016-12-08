@@ -30,7 +30,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:textColor="@color/bpblack" />
 
     <Button
         android:text="Ver Salas"
@@ -46,7 +47,7 @@
         android:onClick="verSalas" />
 
     <TextView
-        android:text="Aplicativo desenvolvido para o curso de ADS do IFC - Araquari (2016) por Alexandre K. Sebrão"
+        android:text="Aplicativo desenvolvido para o curso de Topicos Avançados do IFC - Araquari (2016) por Alexandre K. Sebrão"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button4"

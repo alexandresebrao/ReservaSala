@@ -41,10 +41,6 @@ public class Sala {
         this.id = id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
 
     public String getSalaNome() {
         return this.nome;
@@ -87,36 +83,5 @@ public class Sala {
         {
             return true;
         }
-    }
-
-    public ArrayList<Horarios> getHorarios() {
-
-        final ArrayList<Horarios> horarios = new ArrayList<>();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Horarios");
-        query.whereEqualTo("salaid",this.id);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
-
-                if (e == null) {
-
-                    for (ParseObject object : parseObjects ) {
-
-                        String usuario = object.getString("usuarioid");
-                        Date dataInicio = object.getDate("dataInicio");
-                        Date dataFim = object.getDate("dataFim");
-                        Horarios horario = new Horarios(Sala.this.id,dataInicio,dataFim,false,usuario);
-                        horarios.add(horario);
-                    }
-
-
-                } else {
-                    Log.d("ERROR:", "" + e.getMessage());
-                }
-
-            }
-
-        });
-        return horarios;
     }
 }

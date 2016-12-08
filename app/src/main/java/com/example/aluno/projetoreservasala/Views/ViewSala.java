@@ -1,6 +1,7 @@
 package com.example.aluno.projetoreservasala.Views;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +39,7 @@ public class ViewSala extends AppCompatActivity {
     ListView listaHorarios;
 
     AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +103,11 @@ public class ViewSala extends AppCompatActivity {
         adapter = new HorariosAdapter(getApplicationContext(), R.layout.activity_ver_sala, horariosfinal);
         listaHorarios = (ListView) findViewById(R.id.lstHorario);
         listaHorarios.setAdapter(adapter);
-        isOcupied();
+        try {
+            isOcupied();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -114,7 +121,11 @@ public class ViewSala extends AppCompatActivity {
 
                     horariosfinal.add(horario);
                     adapter.notifyDataSetChanged();
-                    isOcupied();
+                    try {
+                        isOcupied();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Toast.makeText(this,"Horario bate",Toast.LENGTH_LONG).show();
                 }
@@ -124,14 +135,18 @@ public class ViewSala extends AppCompatActivity {
     }
 
 
-    private void isOcupied() {
+    private void isOcupied() throws ParseException {
         Date d = new Date();
         TextView lblOcupied = (TextView) findViewById(R.id.lblOcupied);
         lblOcupied.setText("Situação atual: Disponível");
+
         for (Horarios h : horariosfinal) {
-            if ((d.before(h.getDataFim())) && (d.after(h.getDataInicio()))) {
+            if ((d.after(h.getDataInicio()) && (d.before(h.getDataFim())))) {
                 lblOcupied.setText("Situação atual: Ocupada");
+                Log.d("Horarios: ",String.format("%s -> Data inicio: %s, Data fim: %s",d.toString(),h.getDataInicioString(),h.getDataFimString()));
             }
+
         }
+
     }
 }

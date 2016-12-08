@@ -60,6 +60,7 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
         btnHorarioFim.setVisibility(View.INVISIBLE);
 
         btnSave = (Button) findViewById(R.id.btnCriarHorario);
+        btnSave.setVisibility(View.INVISIBLE);
 
         salaid = intent.getExtras().getString("salaid");
         salanome = intent.getExtras().getString("salanome");
@@ -125,9 +126,12 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
 
         if (tipoHorario == 1) {
             horario.setDataInicio(d);
-            if (horario.isDataFimValid()) {
-                horario.setDataFim(null);
-                lblhorarioFim.setText("");
+            if (horario.getDataFim() != null) {
+                if (horario.getDataFim().before(horario.getDataInicio())) {
+                    lblhorarioFim.setText("");
+                    btnSave.setVisibility(View.INVISIBLE);
+                    horario.setDataFim(null);
+                }
             }
             btnHorarioFim.setVisibility(View.VISIBLE);
             lblhorarioInicio.setText(horario.getDataInicioString());
@@ -159,7 +163,4 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
             Toast.makeText(this,"Não foi possivel salvar o horario",Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 }

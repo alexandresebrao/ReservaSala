@@ -74,12 +74,17 @@ public class Horarios implements Serializable{
     }
 
     public boolean isDataFimValid() {
-        if (this.dataFim.before(this.dataInicio)) {
-            this.dataFim = null;
+        if (this.dataFim != null) {
+            if (this.dataFim.before(this.dataInicio)) {
+                this.dataFim = null;
+                return false;
+            }
+            else {
+                return true;
+
+            }
+        } else {
             return false;
-        }
-        else {
-            return true;
         }
     }
 
