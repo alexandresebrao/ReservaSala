@@ -3,10 +3,15 @@ package com.example.aluno.projetoreservasala.Objetos;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.TextView;
 
+import com.example.aluno.projetoreservasala.R;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.Serializable;
@@ -29,15 +34,16 @@ public class Horarios implements Serializable{
     boolean repeteSemana;
     String usuario;
     ArrayList<Horarios> horarios;
+    String username;
 
 
-
-    public Horarios(String salaid, Date dataInicio, Date dataFim, boolean repeteSemana, String usuario) {
+    public Horarios(String salaid, Date dataInicio, Date dataFim, boolean repeteSemana, String usuario) throws ParseException {
         this.salaid = salaid;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.repeteSemana = repeteSemana;
         this.usuario = usuario;
+        this.username = getUsername();
 
     }
 
@@ -129,16 +135,6 @@ public class Horarios implements Serializable{
 
     }
 
-
-
-
-
-
-    public String getUsuario() {
-        return this.usuario;
-    }
-
-
     public boolean valid() {
         boolean valor = true;
         for (Horarios h : this.horarios) {
@@ -157,4 +153,14 @@ public class Horarios implements Serializable{
     public Date getDataInicio() {
         return dataInicio;
     }
+
+
+    public String getUsername() throws ParseException {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("objectId", this.usuario);
+        ParseObject object = query.getFirst();
+        return object.getString("username");
+    }
+
+
 }

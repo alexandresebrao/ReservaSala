@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.Objetos.Sala;
 import com.example.aluno.projetoreservasala.R;
+import com.parse.ParseException;
 
 import org.w3c.dom.Text;
 
@@ -44,7 +45,11 @@ public class HorariosAdapter extends ArrayAdapter<Horarios> {
             TextView lblHorario = (TextView) v.findViewById(R.id.lblHorarioItem);
             TextView lblReservadoPara = (TextView) v.findViewById(R.id.lblReservaUsuario);
             lblHorario.setText(p.getDataInicioString() + " - " + p.getDataFimString());
-            lblReservadoPara.setText("Reservado para: " + p.getUsuario());
+            try {
+                lblReservadoPara.setText("Reservado para: " + p.getUsername());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         return v;

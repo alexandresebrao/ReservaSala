@@ -13,6 +13,7 @@ import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.Objetos.Sala;
 import com.example.aluno.projetoreservasala.R;
 import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -44,7 +45,12 @@ public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAd
 
                     for (ParseObject object : parseObjects ) {
 
-                        Sala item = new Sala(object.getObjectId(),object.getString("nome"));
+                        Sala item = null;
+                        try {
+                            item = new Sala(object.getObjectId(),object.getString("nome"));
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
                         salas.add(item);
                     }
 

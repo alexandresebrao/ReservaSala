@@ -25,15 +25,17 @@ import java.util.List;
 public class Sala {
     String nome;
     String id;
+    ArrayList<Horarios> horarios;
 
 
     public Sala(String nome){
         this.nome = nome;
     }
 
-    public Sala(String id, String nome){
+    public Sala(String id, String nome) throws com.parse.ParseException {
         this.nome = nome;
         this.id = id;
+        this.horarios = getHorariosInn();
     }
 
 
@@ -83,5 +85,49 @@ public class Sala {
         {
             return true;
         }
+    }
+
+    private ArrayList<Horarios> getHorariosInn() throws com.parse.ParseException {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Horarios");
+        query.whereEqualTo("salaid", this.id);
+        List<ParseObject> objects = query.find();
+        ArrayList<Horarios> horarios = new ArrayList<>();
+        for (ParseObject object : objects) {
+            String id_sala = object.getString("salaid");
+            Date datainicio = object.getDate("dataInicio");
+            Date datafim = object.getDate("dataFim");
+            String usuario = object.getString("usuarioid");
+
+            Horarios horario = new Horarios(id_sala, datainicio, datafim, false, usuario);
+            horarios.add(horario);
+        }
+        return horarios;
+    }
+
+    public boolean isOcupied() throws java.text.ParseException {
+        Date d = new Date();
+        boolean ocupado = false;
+
+        for (Horarios h : this.horarios) {
+            if (d.before(h.getDataFim())) {
+                if (d.after(h.getDataInicio())) {
+                    ocupado = true;
+                    Log.d("Horarios: ",String.format("%s -> Data inicio: %s, Data fim: %s",d.toString(),h.getDataInicio(),h.getDataFim()));
+                }
+            }
+        }
+        return ocupado;
+
+    }
+
+    public ArrayList<Horarios> getHorarios() {
+        return horarios;
+    }
+
+    public boolean addHorario(Horarios horario) {
+        horario.save();
+        this.horarios.add(horario);
+
+        return false;
     }
 }
