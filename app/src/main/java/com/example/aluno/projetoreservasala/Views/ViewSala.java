@@ -1,6 +1,7 @@
 package com.example.aluno.projetoreservasala.Views;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.example.aluno.projetoreservasala.Objetos.Horarios;
 import com.example.aluno.projetoreservasala.Objetos.Sala;
 import com.example.aluno.projetoreservasala.R;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -65,8 +67,7 @@ public class ViewSala extends AppCompatActivity {
 
     public void cadastrarHorario(View v) {
         Intent intent = new Intent(this,CreateHorario.class);
-        intent.putExtra("salaid",sala.getSalaId());
-        intent.putExtra("salanome",sala.getSalaNome());
+        intent.putExtra("sala", (Serializable) sala);
         startActivityForResult(intent,1);
     }
 
@@ -76,16 +77,20 @@ public class ViewSala extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 Horarios horario = (Horarios) data.getExtras().getSerializable("horario");
-                if (sala.addHorario(horario)) {
-                    adapter.notifyDataSetChanged();
-                    try {
-                        setLabelOcupied();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                } else {
+                try {
+                    if (sala.addHorario(horario)) {
+                        adapter.notifyDataSetChanged();
+                        try {
+                            setLabelOcupied();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
 
-                    Toast.makeText(this, "Horario bate", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Horario bate", Toast.LENGTH_LONG).show();
+                    }
+                } catch (com.parse.ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }

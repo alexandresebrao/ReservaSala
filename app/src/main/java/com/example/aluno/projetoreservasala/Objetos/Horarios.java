@@ -57,14 +57,6 @@ public class Horarios implements Serializable{
 
 
 
-    public void setHorarios(ArrayList<Horarios> horarios) {
-        this.horarios = horarios;
-    }
-
-    public ArrayList<Horarios> getHorarios() {
-        return this.horarios;
-    }
-
     public void setDataInicio(Date dataInicio) {
         this.dataInicio = dataInicio;
     }
@@ -107,44 +99,23 @@ public class Horarios implements Serializable{
         }
     }
 
-    public Boolean save() {
-        if (verificaExistenciaDeHorarioValido() && valid()) {
+    public Boolean save() throws ParseException {
+        if (verificaExistenciaDeHorarioValido()) {
             final ParseObject horarioParse = new ParseObject("Horarios");
             horarioParse.put("salaid", this.salaid);
             horarioParse.put("dataInicio", this.dataInicio);
             horarioParse.put("dataFim", this.dataFim);
-            horarioParse.put("usuarioid",this.usuario);
-            horarioParse.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(com.parse.ParseException e) {
-                    if (e == null) {
-
-                        Horarios.this.id = horarioParse.getObjectId();
-
-                    } else {
-
-                        // The save failed.
-                    }
-                }
-            });
+            horarioParse.put("usuarioid", this.usuario);
+            horarioParse.save();
+            this.id = horarioParse.getObjectId();
             return true;
         }
-        else {
+        else
+        {
             return false;
         }
-
     }
 
-    public boolean valid() {
-        boolean valor = true;
-        for (Horarios h : this.horarios) {
-            // (StartA <= EndB)  and  (EndA >= StartB)
-            if ((h.dataInicio.before(this.dataFim)) && (h.dataFim.after(this.dataInicio))) {
-                valor = false;
-            }
-        }
-        return valor;
-    }
 
     public Date getDataFim() {
         return dataFim;

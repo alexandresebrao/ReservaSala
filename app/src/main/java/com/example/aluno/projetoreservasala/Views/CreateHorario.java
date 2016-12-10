@@ -15,6 +15,7 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 
 import com.example.aluno.projetoreservasala.Objetos.Horarios;
+import com.example.aluno.projetoreservasala.Objetos.Sala;
 import com.example.aluno.projetoreservasala.R;
 import com.parse.ParseUser;
 
@@ -45,6 +46,7 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
     String salaid;
     String salanome;
 
+    Sala sala;
     ParseUser currentUser = ParseUser.getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +64,11 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
         btnSave = (Button) findViewById(R.id.btnCriarHorario);
         btnSave.setVisibility(View.INVISIBLE);
 
-        salaid = intent.getExtras().getString("salaid");
-        salanome = intent.getExtras().getString("salanome");
+        sala = (Sala) intent.getSerializableExtra("sala");
 
-        lblSalaHorario.setText(String.format("Reservar sala: %s",salanome));
+        lblSalaHorario.setText(String.format("Reservar sala: %s",sala.getSalaNome()));
 
-        horario = new Horarios(salaid,currentUser.getObjectId());
+        horario = new Horarios(sala.getSalaId(),currentUser.getObjectId());
     }
 
     public void setHorarioInicio(View v) {

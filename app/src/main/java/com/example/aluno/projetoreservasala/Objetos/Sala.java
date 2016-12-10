@@ -14,6 +14,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * Created by xandizitxu on 02/12/16.
  */
-public class Sala {
+public class Sala implements Serializable {
     String nome;
     String id;
     ArrayList<Horarios> horarios;
@@ -124,10 +125,24 @@ public class Sala {
         return horarios;
     }
 
-    public boolean addHorario(Horarios horario) {
-        horario.save();
-        this.horarios.add(horario);
-
+    public boolean addHorario(Horarios horario) throws com.parse.ParseException {
+        if (HorarioValido(horario)) {
+            horario.save();
+            this.horarios.add(horario);
+            return true;
+        }
         return false;
+    }
+
+
+    private boolean HorarioValido(Horarios horario) {
+        boolean valor = true;
+        for (Horarios h : this.horarios) {
+            // (StartA <= EndB)  and  (EndA >= StartB)
+            if ((h.dataInicio.before(horario.dataFim)) && (h.dataFim.after(horario.dataInicio))) {
+                valor = false;
+            }
+        }
+        return valor;
     }
 }
