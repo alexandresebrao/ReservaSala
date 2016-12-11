@@ -43,9 +43,6 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
     TextView lblhorarioInicio;
     TextView lblhorarioFim;
 
-    String salaid;
-    String salanome;
-
     Sala sala;
     ParseUser currentUser = ParseUser.getCurrentUser();
     @Override
@@ -64,7 +61,7 @@ public class CreateHorario extends AppCompatActivity implements CalendarDatePick
         btnSave = (Button) findViewById(R.id.btnCriarHorario);
         btnSave.setVisibility(View.INVISIBLE);
 
-        sala = (Sala) intent.getSerializableExtra("sala");
+        sala = intent.getParcelableExtra("sala");
 
         lblSalaHorario.setText(String.format("Reservar sala: %s",sala.getSalaNome()));
 

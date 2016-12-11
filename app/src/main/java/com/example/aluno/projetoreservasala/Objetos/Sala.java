@@ -1,10 +1,13 @@
 package com.example.aluno.projetoreservasala.Objetos;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.aluno.projetoreservasala.Adaptadores.SalasAdapter;
 import com.example.aluno.projetoreservasala.Views.ViewSala;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -23,11 +26,12 @@ import java.util.List;
 /**
  * Created by xandizitxu on 02/12/16.
  */
-public class Sala implements Serializable {
+public class Sala implements Parcelable {
     String nome;
     String id;
     ArrayList<Horarios> horarios;
 
+    private SalaCallBack callback;
 
     public Sala(String nome){
         this.nome = nome;
@@ -39,6 +43,28 @@ public class Sala implements Serializable {
         this.horarios = getHorariosInn();
     }
 
+    public Sala(String id, String nome, boolean b) throws com.parse.ParseException {
+        this.nome = nome;
+        this.id = id;
+    }
+
+
+    protected Sala(Parcel in) {
+        nome = in.readString();
+        id = in.readString();
+    }
+
+    public static final Creator<Sala> CREATOR = new Creator<Sala>() {
+        @Override
+        public Sala createFromParcel(Parcel in) {
+            return new Sala(in);
+        }
+
+        @Override
+        public Sala[] newArray(int size) {
+            return new Sala[size];
+        }
+    };
 
     public void setId(String id) {
         this.id = id;
@@ -105,6 +131,41 @@ public class Sala implements Serializable {
         return horarios;
     }
 
+    public void getHorariosFirstTime() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Horarios");
+        query.whereEqualTo("salaid", this.id);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, com.parse.ParseException e) {
+                if (e == null){
+                    ArrayList<Horarios> horarios = new ArrayList<>();
+                    for (ParseObject object : objects) {
+                        String id_sala = object.getString("salaid");
+                        Date datainicio = object.getDate("dataInicio");
+                        Date datafim = object.getDate("dataFim");
+                        String usuario = object.getString("usuarioid");
+                        Horarios horario = null;
+                        try {
+                            horario = new Horarios(id_sala, datainicio, datafim, false, usuario);
+                        } catch (com.parse.ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                        horarios.add(horario);
+                    }
+                        Sala.this.horarios = horarios;
+                    try {
+                        callback.returnHorarios();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+
+    }
+
     public boolean isOcupied() throws java.text.ParseException {
         Date d = new Date();
         boolean ocupado = false;
@@ -144,5 +205,28 @@ public class Sala implements Serializable {
             }
         }
         return valor;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nome);
+        dest.writeString(id);
+    }
+
+
+    public interface SalaCallBack {
+        void returnHorarios() throws ParseException;
+    }
+
+
+
+    public void setCallback(Sala.SalaCallBack callback){
+
+        this.callback = callback;
     }
 }

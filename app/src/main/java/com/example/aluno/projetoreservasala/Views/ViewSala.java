@@ -22,7 +22,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 
-public class ViewSala extends AppCompatActivity {
+public class ViewSala extends AppCompatActivity implements Sala.SalaCallBack {
 
     Sala sala;
 
@@ -33,11 +33,17 @@ public class ViewSala extends AppCompatActivity {
 
     ListView listaHorarios;
 
-
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Aguarde");
+        alertDialogBuilder.setMessage("Carregando Horarios...").setCancelable(false);
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
         setContentView(R.layout.activity_ver_sala);
         Intent intent = getIntent();
         lblSala = (TextView) findViewById(R.id.lblSalaNomeView);
@@ -45,29 +51,21 @@ public class ViewSala extends AppCompatActivity {
         String nome = intent.getExtras().getString("salanome");
 
         try {
-            getHorarios(id, nome);
+            sala = new Sala(id,nome,false);
         } catch (com.parse.ParseException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-
-        adapter = new HorariosAdapter(getApplicationContext(), R.layout.activity_ver_sala, sala.getHorarios());
-        listaHorarios = (ListView) findViewById(R.id.lstHorario);
-        listaHorarios.setAdapter(adapter);
-    }
-
-    private void getHorarios(String id, String nome) throws com.parse.ParseException, ParseException {
-        sala = new Sala(id,nome);
+        sala.setCallback(ViewSala.this);
         lblSala.setText("Sala: " + nome);
-        setLabelOcupied();
+        sala.getHorariosFirstTime();
 
 
     }
+
 
     public void cadastrarHorario(View v) {
         Intent intent = new Intent(this,CreateHorario.class);
-        intent.putExtra("sala", (Serializable) sala);
+        intent.putExtra("sala",sala);
         startActivityForResult(intent,1);
     }
 
@@ -103,5 +101,14 @@ public class ViewSala extends AppCompatActivity {
         if (sala.isOcupied()) {
             lblOcupado.setText("Situação atual: Ocupado");
         }
+    }
+
+    @Override
+    public void returnHorarios() throws ParseException {
+        setLabelOcupied();
+        adapter = new HorariosAdapter(getApplicationContext(), R.layout.activity_ver_sala, sala.getHorarios());
+        listaHorarios = (ListView) findViewById(R.id.lstHorario);
+        listaHorarios.setAdapter(adapter);
+        alertDialog.dismiss();
     }
 }

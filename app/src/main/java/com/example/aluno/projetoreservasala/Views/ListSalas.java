@@ -47,7 +47,7 @@ public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAd
 
                         Sala item = null;
                         try {
-                            item = new Sala(object.getObjectId(),object.getString("nome"));
+                            item = new Sala(object.getObjectId(),object.getString("nome"),false);
                         } catch (ParseException e1) {
                             e1.printStackTrace();
                         }
@@ -118,15 +118,4 @@ public class ListSalas extends AppCompatActivity implements SalasAdapter.SalasAd
         }
     }
 
-    @Override
-    public void viewReserva(String id) {
-        for (Sala sala : salas) {
-            if (sala.getSalaId().equals(id)) {
-                Intent intent = new Intent(this,CreateHorario.class);
-                intent.putExtra("salaid",sala.getSalaId());
-                intent.putExtra("salanome",sala.getSalaNome());
-                startActivity(intent);
-            }
-        }
-    }
 }
