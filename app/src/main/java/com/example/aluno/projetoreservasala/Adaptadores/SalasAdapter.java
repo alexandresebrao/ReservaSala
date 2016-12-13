@@ -42,7 +42,7 @@ public class SalasAdapter extends ArrayAdapter<Sala> {
         if (p != null) {
             TextView lblSalaNome = (TextView) v.findViewById(R.id.lblSalaNome);
             Button btnSalaHorario = (Button) v.findViewById(R.id.btnSalaHorario);
-            Button btnSalaReservar = (Button) v.findViewById(R.id.btnSalaReservar);
+
 
             if (lblSalaNome != null) {
                 lblSalaNome.setText(p.getSalaNome());

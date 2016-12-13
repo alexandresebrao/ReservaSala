@@ -1,6 +1,7 @@
 package com.example.aluno.projetoreservasala;
 
 import com.example.aluno.projetoreservasala.Objetos.Sala;
+import com.parse.ParseException;
 
 import org.junit.Test;
 
@@ -12,24 +13,25 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class SalaUnitTest {
-    Sala sala = new Sala("1234","jota");
+    Sala sala;
+
+    public SalaUnitTest() throws ParseException {
+        sala = new Sala("abc");
+    }
 
     @Test
     public void getsalaid_isCorrect() throws Exception {
 
-        assertEquals("1234", sala.getSalaId());
+        assertEquals(null, sala.getSalaId());
     }
 
     @Test
     public void getsalanome_isCorrect() throws Exception {
 
-        assertEquals("jota", sala.getSalaNome());
+        assertEquals("abc", sala.getSalaNome());
     }
 
-    @Test
-    public void salaNome_naopodeserbranco() throws Exception {
-        Sala sala2 = new Sala("123131","");
-        assertFalse(sala2.valida());
-    }
+
+
 
 }

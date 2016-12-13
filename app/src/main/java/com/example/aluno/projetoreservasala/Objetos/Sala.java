@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by xandizitxu on 02/12/16.
@@ -41,6 +43,7 @@ public class Sala implements Parcelable {
         this.nome = nome;
         this.id = id;
         this.horarios = getHorariosInn();
+        removeOldHorarios();
     }
 
     public Sala(String id, String nome, boolean b) throws com.parse.ParseException {
@@ -129,6 +132,7 @@ public class Sala implements Parcelable {
             horarios.add(horario);
         }
         return horarios;
+
     }
 
     public void getHorariosFirstTime() {
@@ -153,6 +157,7 @@ public class Sala implements Parcelable {
                         horarios.add(horario);
                     }
                         Sala.this.horarios = horarios;
+                        removeOldHorarios();
                     try {
                         callback.returnHorarios();
                     } catch (ParseException e1) {
@@ -228,5 +233,14 @@ public class Sala implements Parcelable {
     public void setCallback(Sala.SalaCallBack callback){
 
         this.callback = callback;
+    }
+
+    private void removeOldHorarios() {
+        for (Iterator<Horarios> i = this.horarios.iterator(); i.hasNext();) {
+            Horarios h = i.next();
+            if (h.getDataFim().before(new Date())) {
+                i.remove();
+            }
+        }
     }
 }
